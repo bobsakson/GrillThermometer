@@ -19,5 +19,8 @@
   "dependencies": {
     "express": "^4.13.4",
     "pug": "^2.0.0-beta3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
   }
 }
