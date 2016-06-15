@@ -5,7 +5,7 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
 gulp.task('scripts', function() {
-    return gulp.src('./*.js', './routes/*.js')
+    return gulp.src('./web/*.js', './web/routes/*.js')
         .pipe(concat('main.js'))
         .pipe(gulp.dest('public'));
 });
@@ -16,9 +16,9 @@ gulp.task('nodemon', function (cb) {
     var called = false;
 
     return nodemon({
-            script: 'index.js',
+            script: 'web/index.js',
             ext: 'js',
-            ignore: ['public/*', 'views/*']
+            ignore: ['web/public/*', 'web/views/*']
     })
         .on('start', function () {
             if (!called) {
@@ -38,5 +38,5 @@ gulp.task('browser-sync', ['nodemon'], function() {
 
 gulp.task('default', ['browser-sync'], function() {
   //exec('node index.js');
-  gulp.watch(['./*.js', './routes/*.js'], ['scripts-watch']);
+  gulp.watch(['./web/*.js', './web/routes/*.js'], ['scripts-watch']);
 });
