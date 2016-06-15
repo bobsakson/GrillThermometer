@@ -1,0 +1,27 @@
+{
+  "name": "grillthermometer",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobsakson/GrillThermometer.git"
+  },
+  "author": "Bob Sakson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bobsakson/GrillThermometer/issues"
+  },
+  "homepage": "https://github.com/bobsakson/GrillThermometer#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "pug": "^2.0.0-beta3"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.1.0"
+  }
+}
