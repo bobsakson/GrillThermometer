@@ -3,4 +3,10 @@ html(lang="en")
   head
     title= "Grill Thermometer"
   body
-    h1 Grill Thermometer!
+    div
+      h1 Grill Thermometer!
+    div
+      if isProbeRunning
+        h4 Probe is running.
+      else
+        h4 Probe is not running.

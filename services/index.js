@@ -1,15 +1,33 @@
 var dnode = require('dnode');
+var intervalObject = null;
 
-var pollProbe = function() {
-    return Date.now();
-};
 
 dnode(function (client) {
     this.startProbe = function (cb) {
         client.poll(function () {
-            setInterval(function() {
-                cb(Date.now());
+            console.log('Probe - Start');
+
+            currentTemp = 40;
+            iteration = 1;
+
+            intervalObject = setInterval(function() {
+                if((iteration % 10) === 0) {
+                    currentTemp++;
+                    iteration = 1;
+                }
+
+                iteration++;
+                cb(currentTemp);
             }, 1000);
         });
     }; 
+
+    this.stopProbe = function (cb) {
+        console.log('Probe - Stop');
+
+        clearInterval(intervalObject);
+        cb();
+    };
 }).listen(6060);
+
+console.log('Probe ready');

@@ -37,6 +37,5 @@ gulp.task('browser-sync', ['nodemon'], function() {
 });
 
 gulp.task('default', ['browser-sync'], function() {
-  //exec('node index.js');
   gulp.watch(['./web/*.js', './web/routes/*.js'], ['scripts-watch']);
 });
