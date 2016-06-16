@@ -1,6 +1,8 @@
 var dnode = require('dnode');
-var intervalObject = null;
+var sqlite3 = require('sqlite3');
 
+var db = new sqlite3.Database('../thermometer.db');
+var intervalObject = null;
 
 dnode(function (client) {
     this.startProbe = function (cb) {
@@ -15,6 +17,16 @@ dnode(function (client) {
                     currentTemp++;
                     iteration = 1;
                 }
+
+                var currentdate = new Date();
+                var readingDateTime =   (currentdate.getMonth()+1) + "/"
+                                        + currentdate.getDate() + "/" 
+                                        + currentdate.getFullYear() + " "  
+                                        + currentdate.getHours() + ":"  
+                                        + currentdate.getMinutes() + ":" 
+                                        + currentdate.getSeconds();
+
+                db.run('INSERT INTO temperaturelog VALUES($temperature, $readingDateTime)', { $temperature: currentTemp, $readingDateTime: readingDateTime});
 
                 iteration++;
                 cb(currentTemp);
