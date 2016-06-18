@@ -8,9 +8,14 @@ import { ProbeService } from '../services/probe.service';
 })
 
 export class ProbeComponent { 
+    currentTemperature: number;
+
     constructor(private _probeService: ProbeService) {}
 
     startPollingProbe() {
+        this._probeService.currentTemperature$.subscribe((currentTemp) => {
+            this.currentTemperature = currentTemp;
+        });
         this._probeService.startPollingProbe();
     }
 

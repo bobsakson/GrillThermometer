@@ -36,7 +36,7 @@ io.on("connection", function(socket){
           client.connect(6060, function (remote, conn) {    
               remote.startProbe(function (curTemp) {
                   console.log('Current Temperature');
-                  io.emit('temperatureReading');
+                  io.emit('temperatureReading', curTemp);
               });
           });
     });
