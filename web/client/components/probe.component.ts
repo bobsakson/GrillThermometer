@@ -3,7 +3,8 @@ import { ProbeService } from '../services/probe.service';
 
 @Component({
     selector: 'app',
-    templateUrl: './client/views/probe.html'
+    templateUrl: './client/views/probe.html',
+    providers: [ProbeService]
 })
 
 export class ProbeComponent { 

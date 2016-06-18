@@ -6,7 +6,10 @@ export class ProbeService implements OnInit {
     socket: any;
     
     startPollingProbe() {
+       this.socket = io('http://localhost:4000');
+        this.socket.on('temperatureReading', this.temperatureRading);
        this.socket.emit('startPollingProbe');
+
     }
 
     stopPollingProbe() {
