@@ -7,14 +7,11 @@ html(lang="en")
     script(src="node_modules/zone.js/dist/zone.js")
     script(src="node_modules/reflect-metadata/Reflect.js")
     script(src="node_modules/rxjs/bundles/Rx.umd.js")
-    script(src="node_modules/@angular/core/bundles/core.umd.js")
-    script(src="node_modules/@angular/common/bundles/common.umd.js")
-    script(src="node_modules/@angular/compiler/bundles/compiler.umd.js")
-    script(src="node_modules/@angular/platform-browser/bundles/platform-browser.umd.js")
-    script(src="node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js")
+    script(src="node_modules/systemjs/dist/system.src.js")
+    script(src="client/systemjs.config.js")
 
-    script(src='client/components/app.component.js')
-    script(src='client/main.js')
+    script.
+      System.import('app').catch(function(err){ console.error(err); });
   body
     div
       h1 Grill Thermometer!
