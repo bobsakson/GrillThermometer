@@ -56,7 +56,7 @@ dnode(function (client) {
 
                 var c2 = c*lnohm
 
-                var t2 = math.pow(c2,3)
+                var t2 = Math.pow(c2,3)
 
                 var temp = 1/(a + t1 + t2)
 
