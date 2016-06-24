@@ -44,10 +44,29 @@ dnode(function (client) {
                                         + currentdate.getMinutes() + ":" 
                                         + currentdate.getSeconds();
                 
-                console.log('Reading ', currentTemp);
-                db.run('INSERT INTO temperaturelog VALUES($temperature, $readingDateTime)', { $temperature: currentTemp, $readingDateTime: readingDateTime});
+                var volts = (currentTemp * 3.3) / 1024
+                var ohms = ((1/volts)*3300)-1000
 
-                cb(currentTemp);
+                var lnohm = Math.log1p(ohms)
+                var a =  0.000570569668444
+                var b =  0.000239344111326
+                var c =  0.000000047282773
+
+                var t1 = (b*lnohm)
+
+                var c2 = c*lnohm
+
+                var t2 = math.pow(c2,3)
+
+                var temp = 1/(a + t1 + t2)
+
+                var tempc = temp - 273.15 - 4
+                var tempf = tempc*9/5 + 32
+                
+                console.log('Reading ', tempf);
+                db.run('INSERT INTO temperaturelog VALUES($temperature, $readingDateTime)', { $temperature: tempf, $readingDateTime: readingDateTime});
+
+                cb(tempf);
             });
         });
     }; 
