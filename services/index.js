@@ -89,7 +89,7 @@ var pollProbe = function(channel, cb) {
 
         saveReadingToDB(tempF, tempC, tempK);
 
-        cb({ 'channel': channel, 'currentTemperature': tempf });
+        cb({ 'channel': channel, 'currentTemperature': tempF });
     });
 };
 
