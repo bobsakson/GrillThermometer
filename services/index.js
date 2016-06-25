@@ -63,7 +63,14 @@ var simulateStop = function(cb) {
 /* End simulation methods */
 
 var start = function(probes, cb) {
-    adc.poll(0, 1000, function(reading) {               
+    probes.forEach(function(element, index, array) {
+        console.log('Setting up probe to poll -', element.channel);
+        pollProbe(element.channel, cb);
+    });
+};
+
+var pollProbe = function(channel, cb) {
+    adc.poll(channel, 1000, function(reading) {               
         var volts = (reading * 3.3) / 1024;
         var ohms = ((1 / volts) * 3300) - 1000;
         var lnohm = Math.log1p(ohms);
@@ -82,7 +89,7 @@ var start = function(probes, cb) {
 
         saveReadingToDB(tempF, tempC, tempK);
 
-        cb(tempf);
+        cb({ 'channel': channel, 'currentTemperature': tempf });
     });
 };
 
