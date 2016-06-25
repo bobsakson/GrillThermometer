@@ -12,18 +12,7 @@ var saveReadingToDB = function(channel, fahrenheit, celsius, kelvin) {
 };
 
 var getProbesFromDB = function(cb) {
-    var probes = new Array();
-
-    // db.each('SELECT channel, label FROM probes', function(err, row) {
-    //     console.log('Connected to probe - ', row.label);
-    //     var probe = new Probe(row.channel, row.label);
-    //     probes.push(probe);
-    // });
-
-    // cb(probes);
-
-        db.all('SELECT channel, label FROM probes', function(err, rows) {
-
+    db.all('SELECT channel, label FROM probes', function(err, rows) {
         cb(rows);
     });
 };
@@ -116,7 +105,6 @@ dnode(function (client) {
     this.startProbe = function (cb) {
         client.poll(function () {
             getProbesFromDB(function(probes) {
-                console.log('Probe count', probes.length);
                 console.log('Probe - Start');
 
                 if(isSimulationMode()) {

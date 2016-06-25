@@ -14,10 +14,6 @@ app.use('/node_modules', express.static(path.resolve(__dirname, 'node_modules'))
 app.set('views', './web/views')
 app.set('view engine', 'pug');
 
-// app.listen(3000, function () {
-//   console.log('App running on port 3000.');
-// });
-
 server.listen(3000, function () {
   console.log('App running on port 3000.');
 });
@@ -35,7 +31,6 @@ io.on("connection", function(socket){
 
           client.connect(6060, function (remote, conn) {    
               remote.startProbe(function (curTemp) {
-                  console.log('Current Temperature');
                   io.emit('temperatureReading', curTemp);
               });
           });
