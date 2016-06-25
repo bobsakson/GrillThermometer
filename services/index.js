@@ -4,26 +4,13 @@ var mcp3008 = require('mcp3008.js');
 
 var db = new sqlite3.Database('../thermometer.db');
 var intervalObject = null;
-//var adc = new mcp3008();
 var adc = null;
 
-var currentDateTime = function() {
-    var now = new Date();
-    var readingDateTime =   (now.getMonth()+1) + "/"
-                            + now.getDate() + "/" 
-                            + now.getFullYear() + " "  
-                            + now.getHours() + ":"  
-                            + now.getMinutes() + ":" 
-                            + now.getSeconds();
-
-    return readingDateTime;
-};
-
 var saveReadingToDB = function(fahrenheit, celsius, kelvin) {
-    db.run('INSERT INTO temperaturelog VALUES($fahrenheit, $celsius, $kelvin, $readingDateTime)', { $fahrenheit: fahrenheit, $celsius: celsius, $kelvin: kelvin, $readingDateTime: currentDateTime() });
+    db.run('INSERT INTO temperaturelog VALUES($fahrenheit, $celsius, $kelvin, CURRENT_TIMESTAMP)', { $fahrenheit: fahrenheit, $celsius: celsius, $kelvin: kelvin });
 };
 
-var simulateStart = function() {
+var simulateStart = function(cb) {
     currentTemperature = 40;
     iteration = 1;
 
@@ -40,13 +27,12 @@ var simulateStart = function() {
     }, 1000);
 };
 
-var simulateStop = function() {
+var simulateStop = function(cb) {
     clearInterval(intervalObject);
+    cb();
 };
 
-var start = function() {
-    adc = new mcp3008();
-
+var start = function(cb) {
     adc.poll(0, 1000, function(reading) {               
         var volts = (reading * 3.3) / 1024;
         var ohms = ((1 / volts) * 3300) - 1000;
@@ -63,18 +49,26 @@ var start = function() {
         var tempK = 1 / (a + t1 + t2);
         var tempC = tempK - 273.15 - 4;
         var tempF = tempC * (9 / 5) + 32;
-        
-        console.log('Reading ', tempf);
+
         saveReadingToDB(tempF, tempC, tempK);
 
         cb(tempf);
     });
 };
 
-var stop = function() {
+var stop = function(cb) {
     adc.stop();
     adc.close();
     cb();
+};
+
+var isDebugMode = function() {
+    if(process.argv[2] && process.argv[2] === '1') {
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 dnode(function (client) {
@@ -82,16 +76,29 @@ dnode(function (client) {
         client.poll(function () {
             console.log('Probe - Start');
 
-            simulateStart();
-            //start();            
+            if(isDebugMode()) {
+                simulateStart(cb);
+            }
+            else {
+                if(!adc) {
+                    adc = new mcp3008();
+                }
+                
+                start(cb);
+            }        
         });
     }; 
 
     this.stopProbe = function (cb) {
         console.log('Probe - Stop');
 
-        simulateStop();
-        //stop();
+        if(isDebugMode()) {
+            simulateStop(cb);
+        }
+        else {
+            stop(cb);
+            adc = null;
+        }            
     };
 }).listen(6060);
 

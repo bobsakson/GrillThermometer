@@ -1,0 +1,1 @@
+create table temperaturelog(fahrenheit REAL, celsius REAL, kelvin REAL, readingDateTime DEFAULT CURRENT_TIMESTAMP);
