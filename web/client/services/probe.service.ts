@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
-import { Reading } from '../models/Reading';
+import { Reading } from '../models/reading';
 declare var io: any;
 
 @Injectable()
