@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProbeService } from '../services/probe.service';
-import { Reading } from '../models/Reading';
+import { Reading } from '../models/reading';
 
 @Component({
     selector: 'app',
