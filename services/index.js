@@ -7,19 +7,25 @@ var db = new sqlite3.Database('../thermometer.db');
 var intervalObject = new Array();
 var adc = null;
 
-var saveReadingToDB = function(fahrenheit, celsius, kelvin) {
-    db.run('INSERT INTO temperaturelog VALUES($fahrenheit, $celsius, $kelvin, CURRENT_TIMESTAMP)', { $fahrenheit: fahrenheit, $celsius: celsius, $kelvin: kelvin });
+var saveReadingToDB = function(channel, fahrenheit, celsius, kelvin) {
+    db.run('INSERT INTO temperaturelog VALUES($channel, $fahrenheit, $celsius, $kelvin, CURRENT_TIMESTAMP)', { $channel: channel, $fahrenheit: fahrenheit, $celsius: celsius, $kelvin: kelvin });
 };
 
-var getProbesFromDB = function() {
+var getProbesFromDB = function(cb) {
     var probes = new Array();
 
-    db.each('SELECT channel, label FROM probes', function(err, row) {
-        var probe = new Probe(row.channel, row.label);
-        probes.push(probe);
-    });
+    // db.each('SELECT channel, label FROM probes', function(err, row) {
+    //     console.log('Connected to probe - ', row.label);
+    //     var probe = new Probe(row.channel, row.label);
+    //     probes.push(probe);
+    // });
 
-    return probes;
+    // cb(probes);
+
+        db.all('SELECT channel, label FROM probes', function(err, rows) {
+
+        cb(rows);
+    });
 };
 
 /*
@@ -30,8 +36,8 @@ var getProbesFromDB = function() {
  */
 
 var simulatePollProbe = function(channel, cb) {
-    currentTemperature = Math.floor(Math.random() * (max - min + 1)) + min;
-    iteration = 1;
+    var currentTemperature = Math.floor(Math.random() * 100) + 1;
+    var iteration = 1;
 
     intervalObject.push(setInterval(function() {
         if((iteration % 10) === 0) {
@@ -39,20 +45,24 @@ var simulatePollProbe = function(channel, cb) {
             iteration = 1;
         }
 
-        saveReadingToDB(currentTemperature, 0, 0);
+        saveReadingToDB(channel, currentTemperature, 0, 0);
 
         iteration++;
-        cb(currentTemperature);
+        cb({ 'channel': channel, 'currentTemperature': currentTemperature });
     }, 1000));
 };
 
 var simulateStart = function(probes, cb) {
+    console.log('Simulation starting.');
+    console.log(probes.length);
     probes.forEach(function(element, index, array) {
+        console.log('Setting up probe to poll -', element.channel);
         simulatePollProbe(element.channel, cb);
     });
 };
 
 var simulateStop = function(cb) {
+    console.log('Simulation stopping.');
     intervalObject.forEach(function(element, index, array) {
         clearInterval(element);
     });
@@ -105,20 +115,21 @@ var isSimulationMode = function() {
 dnode(function (client) {
     this.startProbe = function (cb) {
         client.poll(function () {
-            var probes = getProbesFromDB();
+            getProbesFromDB(function(probes) {
+                console.log('Probe count', probes.length);
+                console.log('Probe - Start');
 
-            console.log('Probe - Start');
-
-            if(isSimulationMode()) {
-                simulateStart(probes, cb);
-            }
-            else {
-                if(!adc) {
-                    adc = new mcp3008();
+                if(isSimulationMode()) {
+                    simulateStart(probes, cb);
                 }
-                
-                start(probes, cb);
-            }        
+                else {
+                    if(!adc) {
+                        adc = new mcp3008();
+                    }
+                    
+                    start(probes, cb);
+                }
+            });        
         });
     }; 
 

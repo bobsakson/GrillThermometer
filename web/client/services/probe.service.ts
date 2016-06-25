@@ -1,23 +1,24 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, Observer } from 'rxjs/Rx';
+import { Reading } from '../models/Reading';
 declare var io: any;
 
 @Injectable()
 export class ProbeService implements OnInit {
-    currentTemperature$: Observable<number>;
-    private _currentTemperatureObserver: Observer<number>;
-    private _temperatureReadings: Array<number>;
+    currentTemperature$: Observable<Reading>;
+    private _currentTemperatureObserver: Observer<Reading>;
+    private _temperatureReadings: Array<Reading>;
 
     socket: any;
     
     constructor() {
-        this._temperatureReadings = new Array<number>();
-        this.currentTemperature$ = new Observable<number>(observer =>  this._currentTemperatureObserver = observer).share();
+        this._temperatureReadings = new Array<Reading>();
+        this.currentTemperature$ = new Observable<Reading>(observer =>  this._currentTemperatureObserver = observer).share();
     }
 
     startPollingProbe() {
        this.socket = io('http://localhost:4000');
-       this.socket.on('temperatureReading', (currenttemp) => this.temperatureReading(currenttemp));
+       this.socket.on('temperatureReading', (reading) => this.temperatureReading(reading));
        this.socket.emit('startPollingProbe');
     }
 
@@ -25,10 +26,10 @@ export class ProbeService implements OnInit {
         this.socket.emit('stopPollingProbe');
     }
 
-    temperatureReading(currentTemp: number) {
-        console.log('Received a reading', currentTemp);
-        this._temperatureReadings.push(currentTemp);
-        this._currentTemperatureObserver.next(currentTemp);
+    temperatureReading(reading: any) {
+        console.log('Received a reading', reading.currentTemperature);
+        this._temperatureReadings.push(reading);
+        this._currentTemperatureObserver.next(reading);
     }
 
     ngOnInit() {

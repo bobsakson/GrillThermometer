@@ -1,5 +1,5 @@
 <button (click)="startPollingProbe()">Start</button>
 <button (click)="stopPollingProbe()">Stop</button>
-<div>
-    <h2>{{currentTemperature}}</h2>
+<div *ngFor="let x of currentTemperature">
+    <h2>Channel {{x.channel}}: {{x.currentTemperature}}</h2>
 </div>
