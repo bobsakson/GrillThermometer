@@ -6,5 +6,7 @@ web/client/components/*.js
 web/client/components/*.js.map
 web/client/services/*.js
 web/client/services/*.js.map
+web/client/models/*.js
+web/client/models/*.js.map
 web/typings
 thermometer.db
