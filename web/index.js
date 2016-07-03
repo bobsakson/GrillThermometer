@@ -5,8 +5,11 @@ var server = require("http").Server(app);
 var io = require("socket.io")(server);
 var dnode = require('dnode');
 
-var indexRoutes = require('./routes/index.js')
+var indexRoutes = require('./routes/index.js');
 app.use('/', indexRoutes);
+
+var profileRoutes = require('./routes/profile.js');
+app.use('/profile1', profileRoutes);
 
 app.use('/client', express.static(path.resolve(__dirname, 'client')))
 app.use('/node_modules', express.static(path.resolve(__dirname, 'node_modules')))
@@ -19,7 +22,7 @@ server.listen(3000, function () {
 });
 
 io.on("connection", function(socket){
-  console.log('sconnection established');
+  console.log('connection established');
     socket.on('startPollingProbe', function(msg){
         console.log('socket message received');
         var client = dnode({    

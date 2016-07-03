@@ -1,12 +1,17 @@
 var sqlite3 = require('sqlite3');
+var fs = require('fs');
+var path = require('path');
+sqlite3.verbose();
 
 var connectToDatabase = function() {
-    return new sqlite3.Database('../../thermometer.db');
+    console.log(__dirname + '/../thermometer.db');
+    
+    return new sqlite3.Database(__dirname + '/../thermometer.db');
 }
 
-var getProfiles = function() {
+var getProfiles = function(cb) {
     var db = connectToDatabase();
-
+    console.log('db');
     db.all('SELECT id, name, description FROM profile WHERE isDeleted = 0', function(err, rows) {
         db.close();
 
@@ -14,7 +19,8 @@ var getProfiles = function() {
             console.log(err);
         }
         else {
-            return rows;
+            console.log('repo', rows);
+            cb(rows);
         }
     });
 };

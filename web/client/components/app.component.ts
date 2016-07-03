@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouteConfig, ROUTER_PROVIDERS, ROUTER_DIRECTIVES } from '@angular/router-deprecated';
 import { ProbeComponent } from './probe.component';
+import { ProfileComponent } from './profile.component';
 
 @Component({
     selector: 'app',
@@ -15,6 +16,11 @@ import { ProbeComponent } from './probe.component';
     name: 'Probe',
     component: ProbeComponent,
     useAsDefault: true
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: ProfileComponent
   }
 ])
 
