@@ -7,3 +7,4 @@ CREATE TABLE probeProfile(id INTEGER PRIMARY KEY, channel INTEGER REFERENCES pro
 -- Below is test data.
 INSERT INTO probes VALUES (0, 'Food');
 INSERT INTO probes VALUES (1, 'Grill');
+INSERT INTO profile VALUES('Pork Ribs', 'Baby back ribs.', 0);

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Profile } from '../models/profile';
 import { ProbeProfile } from '../models/probeProfile';
 import 'rxjs/add/operator/toPromise';
@@ -28,8 +28,16 @@ export class ProfileService {
                .catch((err) => console.log(err));
     }
 
-    getProfile(id) {
+    getProfile(id): Promise<Profile> {
+        let params: URLSearchParams = new URLSearchParams();
+        params.set('id', id);
 
+        return this.http.get('http://localhost:4000/profile1/', { search: params })
+               .toPromise()
+               .then((response) => 
+                response.json()
+                )
+               .catch((err) => console.log(err));
     }
 
     saveProfile(profile: Profile) {

@@ -3,7 +3,7 @@ var sqlite3 = require('sqlite3');
 var mcp3008 = require('mcp3008.js');
 var Probe = require('./probe.js');
 
-var db = new sqlite3.Database('../thermometer.db');
+var db = new sqlite3.Database('../web/thermometer.db');
 var intervalObject = new Array();
 var adc = null;
 
