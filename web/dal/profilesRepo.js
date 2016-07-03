@@ -25,23 +25,25 @@ var getProfiles = function(cb) {
     });
 };
 
-var getProfile = function(id) {
+var getProfile = function(id, cb) {
     var db = connectToDatabase();
 
-    db.all('SELECT p.id, p.name, p.description, pp.id, pp.channel, pp.label, pp.upperThreshold, pp.lowerThreshold FROM profile p INNER JOIN profileProbe pp ON p.id = pp.profileId WHERE p.id = $id AND pp.isDeleted = 0', { $id: id }, function(err, rows) {
+    db.all('SELECT p.id, p.name, p.description, pp.id, pp.channel, pp.label, pp.upperThreshold, pp.lowerThreshold FROM profile p INNER JOIN probeProfile pp ON p.id = pp.profileId WHERE p.id = $id AND pp.isDeleted = 0', { $id: id }, function(err, rows) {
         if(err) {
             db.close();
             console.log(err);
         }
         else {
             if(rows) {
+                console.log(rows);
+                console.log(rows.length);
                 var profile = new Object();
                 profile.id = rows[0].id;
                 profile.name = rows[0].name;
                 profile.description = rows[0].descriptionl
                 profile.probes = new Array();
 
-                rows.forEach(function(element) {
+                rows.forEach(function(item) {
                     var probe = new Object();
                     probe.channel = item.channel;
                     probe.label = item.label;
@@ -52,6 +54,8 @@ var getProfile = function(id) {
                 }, this);
 
                 db.close();
+
+                cb(profile);
             }
         }
     });

@@ -9,7 +9,11 @@ var getProfiles = function(profiles) {
 
 router.get('/', function(req, res) {
     if(req.query.id) {
-        res.json({ id: 1, name: 'Brisket', description: 'Franklin\'s style brisket.'});
+        //res.json({ id: 1, name: 'Brisket', description: 'Franklin\'s style brisket.'});
+        profilesRepo.getProfile(req.query.id, function(profile) {
+            console.log('controller', profile);
+            res.json(profile);
+        });
     }
     else {
         profilesRepo.getProfiles(function(profiles) {
