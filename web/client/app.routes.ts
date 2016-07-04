@@ -1,7 +1,7 @@
 import { provideRouter, RouterConfig }  from '@angular/router';
 import { ProbeComponent } from './components/probe.component';
 import { ProfileComponent } from './components/profile.component';
-import { ProfileDetailComponent } from './components/profileDetail.component';
+import { ProfileDetailComponent } from './components/profile.detail.component';
 
 const routes: RouterConfig = [
   {
