@@ -64,19 +64,17 @@ var getProfile = function(id, cb) {
 var saveProfile = function(profile) {
     var db = connectToDatabase();
 
-    console.log(profile);
-
     // TODO: Need to convert this to a transaction.
     db.run('INSERT INTO profile(name, description, isDeleted) VALUES($name, $description, $isDeleted)', { $name: profile.name, $description: profile.description, $isDeleted: 0 }, function(err, row) {
         if(err) {
             console.log(err);
         }
         else {
-            db.get('SELECT MAX(id) as maxId FROM profile', function(err, row) {
-                profile.probes.forEach(function(probe) {
-                    db.run('INSERT INTO probeProfile(channel, profileId, label, upperThreshold, lowerThreshold, isDeleted) VALUES($channel, $profileId, $label, $upperThreshold, $lowerThreshold, $isDeleted)', { $channel: probe.channel, $profileId: row.maxId, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: 0});
-                }, this);
-            });
+            var lastId = this.lastID;
+
+            profile.probes.forEach(function(probe) {
+                db.run('INSERT INTO probeProfile(channel, profileId, label, upperThreshold, lowerThreshold, isDeleted) VALUES($channel, $profileId, $label, $upperThreshold, $lowerThreshold, $isDeleted)', { $channel: probe.channel, $profileId: lastId, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: 0});
+            }, this);
         }
     });
 };
