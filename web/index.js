@@ -4,6 +4,9 @@ var app = express();
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
 var dnode = require('dnode');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 var indexRoutes = require('./routes/index.js');
 app.use('/', indexRoutes);

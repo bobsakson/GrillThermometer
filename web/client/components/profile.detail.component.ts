@@ -19,7 +19,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
 
     onSubmit() {
-        
+        this.profileService.saveProfile(this.profile).then(response => console.log(response));
     }
 
     ngOnInit() {

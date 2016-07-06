@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Profile } from '../models/profile';
 import { ProbeProfile } from '../models/probeProfile';
 import 'rxjs/add/operator/toPromise';
@@ -40,8 +40,15 @@ export class ProfileService {
                .catch((err) => console.log(err));
     }
 
-    saveProfile(profile: Profile) {
+    saveProfile(profile: Profile): Promise<boolean> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
 
+        return this.http.post('http://localhost:4000/profile1/', JSON.stringify({ profile: profile }), { headers: headers })
+               .toPromise()
+               .then((response) => 
+                true
+                )
+               .catch((err) => console.log(err));
     }
 
     deleteProfile(id) {
