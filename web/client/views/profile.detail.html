@@ -1,5 +1,5 @@
 <h2>Details</h2>
-<form (ngSubmit)="onSubmit()">
+<form>
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" [(ngModel)]="profile.name" name="name" #name="ngModel" />
@@ -26,5 +26,5 @@
             <input type="text" class="form-control" [(ngModel)]="probe.lowerThreshold" name="lowerThreshold" #name="ngModel" />
         </div>
     </div>
-    <button type="submit">Save</button>
+    <button (click)="onSubmit()">Save</button>
 </form>
