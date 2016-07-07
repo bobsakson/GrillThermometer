@@ -10,23 +10,25 @@
     </div>
     <hr/>
     <div *ngFor="let probe of profile.probes">
-        <div class="form-group">
-            <label for="channel">Channel</label>
-            <input type="text" class="form-control" [(ngModel)]="probe.channel" name="channel" #name="ngModel" />
+        <div *ngIf="!probe.isDeleted">
+            <div class="form-group">
+                <label for="channel">Channel</label>
+                <input type="text" class="form-control" [(ngModel)]="probe.channel" name="channel" #name="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="label">Label</label>
+                <input type="text" class="form-control" [(ngModel)]="probe.label" name="label" #name="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="upperThreshold">Upper Threshold</label>
+                <input type="text" class="form-control" [(ngModel)]="probe.upperThreshold" name="upperThreshold" #name="ngModel" />
+            </div>
+            <div class="form-group">
+                <label for="lowerThreshold">Lower Threshold</label>
+                <input type="text" class="form-control" [(ngModel)]="probe.lowerThreshold" name="lowerThreshold" #name="ngModel" />
+            </div>
+            <button (click)="deleteProbe(probe.id)">Delete</button>
         </div>
-        <div class="form-group">
-            <label for="label">Label</label>
-            <input type="text" class="form-control" [(ngModel)]="probe.label" name="label" #name="ngModel" />
-        </div>
-        <div class="form-group">
-            <label for="upperThreshold">Upper Threshold</label>
-            <input type="text" class="form-control" [(ngModel)]="probe.upperThreshold" name="upperThreshold" #name="ngModel" />
-        </div>
-        <div class="form-group">
-            <label for="lowerThreshold">Lower Threshold</label>
-            <input type="text" class="form-control" [(ngModel)]="probe.lowerThreshold" name="lowerThreshold" #name="ngModel" />
-        </div>
-        <button (click)="deleteProbe(probe.id)">Delete</button>
     </div>
     <div>
         <button (click)="addProbe()" *ngIf="!showAddProbe">Add</button>

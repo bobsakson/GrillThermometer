@@ -36,6 +36,10 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
         this.showAddProbe = false;
     }
 
+    deleteProbe(id) {
+        this.profile.probes.find(probe => probe.id === id).isDeleted = true;
+    }
+
     onSubmit() {
         console.log('submit called');
         this.profileService.saveProfile(this.profile).then(response => console.log(response));
