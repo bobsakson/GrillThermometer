@@ -29,4 +29,11 @@ router.post('/', function(req, res) {
     });
 });
 
+router.put('/', function(req, res) {
+
+    profilesRepo.updateProfile(req.body.profile, function() {
+        res.send(true);
+    });
+});
+
 module.exports = router;

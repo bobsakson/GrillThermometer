@@ -43,12 +43,22 @@ export class ProfileService {
     saveProfile(profile: Profile): Promise<boolean> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
 
-        return this.http.post('http://localhost:4000/profile1/', JSON.stringify({ profile: profile }), { headers: headers })
+        if(!profile.id) {
+            return this.http.post('http://localhost:4000/profile1/', JSON.stringify({ profile: profile }), { headers: headers })
                .toPromise()
                .then((response) => 
                 true
                 )
                .catch((err) => console.log(err));
+        }
+        else {
+            return this.http.put('http://localhost:4000/profile1/', JSON.stringify({ profile: profile }), { headers: headers })
+               .toPromise()
+               .then((response) => 
+                true
+                )
+               .catch((err) => console.log(err));
+        }
     }
 
     deleteProfile(id) {

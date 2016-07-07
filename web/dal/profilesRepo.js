@@ -35,8 +35,6 @@ var getProfile = function(id, cb) {
         }
         else {
             if(rows) {
-                console.log(rows);
-                console.log(rows.length);
                 var profile = new Object();
                 profile.id = rows[0].id;
                 profile.name = rows[0].name;
@@ -61,10 +59,10 @@ var getProfile = function(id, cb) {
     });
 };
 
+// TODO: If sqlite will be used, need to figure out the callbacks for saving. Not worrying about it since I am switching to Postgres.
 var saveProfile = function(profile) {
     var db = connectToDatabase();
 
-    // TODO: Need to convert this to a transaction.
     db.run('INSERT INTO profile(name, description, isDeleted) VALUES($name, $description, $isDeleted)', { $name: profile.name, $description: profile.description, $isDeleted: 0 }, function(err, row) {
         if(err) {
             console.log(err);
@@ -81,6 +79,24 @@ var saveProfile = function(profile) {
 
 var updateProfile = function(profile) {
     var db = connectToDatabase();
+
+    db.run('UPDATE profile SET name = $name, description = $description, isDeleted = $isDeleted WHERE id = $id', { $id: profile.id, $name: profile.name, $description: profile.description, $isDeleted: profile.isDeleted }, function(err, row) {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            var lastId = this.lastID;
+
+            profile.probes.forEach(function(probe) {
+                if(probe.id === null) {
+                    db.run('INSERT INTO probeProfile(channel, profileId, label, upperThreshold, lowerThreshold, isDeleted) VALUES($channel, $profileId, $label, $upperThreshold, $lowerThreshold, $isDeleted)', { $channel: probe.channel, $profileId: lastId, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: probe.isDeleted });
+                }
+                else {
+                    db.run('UPDATE probeProfile SET channel = $channel, label = $label, upperThreshold = $upperThreshold, lowerThreshold = $lowerThreshold, isDeleted = $isDeleted WHERE id = $id', { $channel: probe.channel, $id: probe.id, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: probe.isDeleted });
+                }
+            }, this);
+        }
+    });
 
     db.close();
 };
