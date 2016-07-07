@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { Subscription } from 'rxjs/Subscription';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
+import { ProbeProfile } from '../models/probeProfile';
 
 @Component({
     selector: 'app',
@@ -15,8 +16,25 @@ import { Profile } from '../models/profile';
 export class ProfileDetailComponent implements OnInit, OnDestroy {
     profile: Profile;
     sub: Subscription;
+    showAddProbe: boolean;
+    newProbe: ProbeProfile;
 
     constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
+
+    addProbe() {
+        this.showAddProbe = true;
+    }
+    
+    saveProbe() {
+        this.profile.probes.push(this.newProbe);
+        this.newProbe = new ProbeProfile();
+        this.showAddProbe = false;
+    }
+
+    cancelAddProbe() {
+        this.newProbe = new ProbeProfile();
+        this.showAddProbe = false;
+    }
 
     onSubmit() {
         console.log('submit called');
@@ -25,6 +43,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.profile = new Profile();
+        this.newProbe = new ProbeProfile();
 
         this.sub = this.route.params.subscribe(params => {
             let id = +params['id'];

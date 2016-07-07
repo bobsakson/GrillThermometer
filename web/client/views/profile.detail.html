@@ -8,6 +8,7 @@
         <label for="description">Description</label>
         <input type="text" class="form-control" [(ngModel)]="profile.description" name="description" #name="ngModel" />
     </div>
+    <hr/>
     <div *ngFor="let probe of profile.probes">
         <div class="form-group">
             <label for="channel">Channel</label>
@@ -25,6 +26,31 @@
             <label for="lowerThreshold">Lower Threshold</label>
             <input type="text" class="form-control" [(ngModel)]="probe.lowerThreshold" name="lowerThreshold" #name="ngModel" />
         </div>
+        <button (click)="deleteProbe(probe.id)">Delete</button>
     </div>
+    <div>
+        <button (click)="addProbe()" *ngIf="!showAddProbe">Add</button>
+        <button (click)="cancelAddProbe()" *ngIf="showAddProbe">Cancel</button>
+    </div>
+    <div *ngIf="showAddProbe">
+        <div class="form-group">
+            <label for="channel">Channel</label>
+            <input type="text" class="form-control" [(ngModel)]="newProbe.channel" name="newchannel" />
+        </div>
+        <div class="form-group">
+            <label for="label">Label</label>
+            <input type="text" class="form-control" [(ngModel)]="newProbe.label" name="newlabel" />
+        </div>
+        <div class="form-group">
+            <label for="upperThreshold">Upper Threshold</label>
+            <input type="text" class="form-control" [(ngModel)]="newProbe.upperThreshold" name="newupperThreshold" />
+        </div>
+        <div class="form-group">
+            <label for="lowerThreshold">Lower Threshold</label>
+            <input type="text" class="form-control" [(ngModel)]="newProbe.lowerThreshold" name="newlowerThreshold"/>
+        </div>
+        <button (click)="saveProbe()">Add Probe</button>
+    </div>
+    
     <button (click)="onSubmit()">Save</button>
 </form>
