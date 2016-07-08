@@ -27,12 +27,12 @@
                 <label for="lowerThreshold">Lower Threshold</label>
                 <input type="text" class="form-control" [(ngModel)]="probe.lowerThreshold" name="lowerThreshold" #name="ngModel" />
             </div>
-            <button (click)="deleteProbe(probe.id)">Delete</button>
+            <button (click)="deleteProbe(probe.id)" class="btn btn-default">Delete</button>
         </div>
     </div>
     <div>
-        <button (click)="addProbe()" *ngIf="!showAddProbe">Add</button>
-        <button (click)="cancelAddProbe()" *ngIf="showAddProbe">Cancel</button>
+        <button (click)="addProbe()" *ngIf="!showAddProbe" class="btn btn-default">Add</button>
+        <button (click)="cancelAddProbe()" *ngIf="showAddProbe" class="btn btn-default">Cancel</button>
     </div>
     <div *ngIf="showAddProbe">
         <div class="form-group">
@@ -51,8 +51,8 @@
             <label for="lowerThreshold">Lower Threshold</label>
             <input type="text" class="form-control" [(ngModel)]="newProbe.lowerThreshold" name="newlowerThreshold"/>
         </div>
-        <button (click)="saveProbe()">Add Probe</button>
+        <button (click)="saveProbe()" class="btn btn-default">Add Probe</button>
     </div>
     
-    <button (click)="onSubmit()">Save</button>
+    <button (click)="onSubmit()" class="btn btn-primary">Save</button>
 </form>

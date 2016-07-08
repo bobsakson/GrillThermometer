@@ -1,8 +1,9 @@
-<div>
-    This is the Angular 2 app.
+<div class="container">
+    <ul class="nav nav-pills">
+        <li class="active"><a [routerLink]="['probe']">Grill</a></li>
+        <li><a [routerLink]="['profile']">Profile</a></li>
+        <li><a [routerLink]="['profile', 1]">Profile 1</a></li>
+    </ul>
+
+    <router-outlet></router-outlet>
 </div>
-<div>
-     <a [routerLink]="['profile']">Profile</a>
-     <a [routerLink]="['profile', 1]">Profile 1</a>
-</div>
-<router-outlet></router-outlet>

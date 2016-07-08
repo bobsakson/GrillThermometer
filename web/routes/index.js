@@ -42,7 +42,7 @@ router.get('/stop', function(req, res) {
       });
   });
 
-  res.render('index', { isProbeRunning: true });
+  res.render('index', { isProbeRunning: false });
 });
 
 module.exports = router;
