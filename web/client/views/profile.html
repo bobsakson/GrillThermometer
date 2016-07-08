@@ -1,6 +1,6 @@
 <div>
     <h2>Profiles</h2>
-    <ul *ngFor="let profile of profiles">
+    <ul *ngFor="let profile of profiles" class="list-unstyled">
        <li><a [routerLink]="['/profile', profile.id]">{{profile.name}}</a></li>
     </ul>
 </div>
