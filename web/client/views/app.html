@@ -1,7 +1,7 @@
 <div class="container">
     <ul class="nav nav-pills nav-justified">
-        <li class="active"><a [routerLink]="['probe']">Grill</a></li>
-        <li><a [routerLink]="['profile']">Profile</a></li>
+        <li [class.active]="isActiveRoute('/probe')"><a [routerLink]="['probe']" >Grill</a></li>
+        <li [class.active]="isActiveRoute('/profile')"><a [routerLink]="['profile']" >Profile</a></li>
     </ul>
 
     <router-outlet></router-outlet>
