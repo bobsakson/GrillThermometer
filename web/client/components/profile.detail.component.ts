@@ -22,6 +22,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
 
     addProbe() {
+        this.newProbe.isDeleted = false;
         this.showAddProbe = true;
     }
     
@@ -41,17 +42,20 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
-        console.log('submit called');
         this.profileService.saveProfile(this.profile).then(response => console.log(response));
     }
 
     ngOnInit() {
         this.profile = new Profile();
+        this.profile.probes = new Array<ProbeProfile>();
         this.newProbe = new ProbeProfile();
 
         this.sub = this.route.params.subscribe(params => {
             let id = +params['id'];
-            this.profileService.getProfile(id).then(profile => this.profile = profile);
+
+            if(id !== 0) {
+                this.profileService.getProfile(id).then(profile => this.profile = profile);
+            }
         });
     }
 

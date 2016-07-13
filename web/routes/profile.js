@@ -23,14 +23,14 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-
+    console.log('post');
     profilesRepo.saveProfile(req.body.profile, function() {
         res.send(true);
     });
 });
 
 router.put('/', function(req, res) {
-
+    console.log('put');
     profilesRepo.updateProfile(req.body.profile, function() {
         res.send(true);
     });
