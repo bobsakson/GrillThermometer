@@ -18,6 +18,8 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     sub: Subscription;
     showAddProbe: boolean;
     newProbe: ProbeProfile;
+    selectedProbe: ProbeProfile;
+    probes: Array<ProbeProfile>;
 
     constructor(private profileService: ProfileService, private route: ActivatedRoute) {}
 
@@ -49,12 +51,18 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
         this.profile = new Profile();
         this.profile.probes = new Array<ProbeProfile>();
         this.newProbe = new ProbeProfile();
+        this.selectedProbe = new ProbeProfile();
+        this.probes = new Array<ProbeProfile>();
 
         this.sub = this.route.params.subscribe(params => {
             let id = +params['id'];
 
             if(id !== 0) {
-                this.profileService.getProfile(id).then(profile => this.profile = profile);
+                this.profileService.getProfile(id).then(profile => {
+                    this.profile = profile;
+                    this.probes = profile.probes.filter(p => p.isDeleted === false);
+                    this.selectedProbe = profile.probes.find(p => p.isDeleted == false);
+                });
             }
         });
     }
