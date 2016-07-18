@@ -5,6 +5,8 @@ var server = require("http").Server(app);
 var io = require("socket.io")(server);
 var dnode = require('dnode');
 var bodyParser = require('body-parser');
+var Sequelize = require('sequelize');
+var Umzug = require('umzug');
 
 app.use(bodyParser.json());
 
@@ -20,9 +22,40 @@ app.use('/node_modules', express.static(path.resolve(__dirname, 'node_modules'))
 app.set('views', './views')
 app.set('view engine', 'pug');
 
-server.listen(3000, function () {
-  console.log('App running on port 3000.');
+var sequelizeInstance = new Sequelize('thermometer', 'thermometer', 'thermometer', {
+    host: 'localhost',
+    dialect: 'postgres',
+
+    pool: {
+        max: 5,
+        min: 0,
+        idle: 10000
+    }
 });
+
+var umzug = new Umzug({
+    storage: 'sequelize',
+
+    storageOptions: {
+        sequelize: sequelizeInstance,
+    },
+
+    migrations: {
+        params: [sequelizeInstance.getQueryInterface(), sequelizeInstance.constructor, function() {
+            throw new Error('Migration tried to use old style "done" callback. Please upgrade to "umzug" and return a promise instead.');
+        }],
+        path: './migrations',
+        pattern: /\.js$/
+    }
+});
+
+ umzug.up().then(function()  {
+     console.log('Migration complete!');
+
+     server.listen(3000, function () {
+        console.log('App running on port 3000.');
+    });
+ });
 
 io.on("connection", function(socket){
   console.log('connection established');
