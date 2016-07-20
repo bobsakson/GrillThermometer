@@ -1,6 +1,8 @@
 var sqlite3 = require('sqlite3');
 var fs = require('fs');
 var path = require('path');
+var models = require('../models');
+
 sqlite3.verbose();
 
 var connectToDatabase = function() {
@@ -10,19 +12,22 @@ var connectToDatabase = function() {
 }
 
 var getProfiles = function(cb) {
-    var db = connectToDatabase();
-    console.log('db');
-    db.all('SELECT id, name, description FROM profile WHERE isDeleted = 0', function(err, rows) {
-        db.close();
-
-        if(err) {
-            console.log(err);
-        }
-        else {
-            console.log('repo', rows);
-            cb(rows);
-        }
+    models.Profile.findAll({ where: { isDeleted: false } }).then(function(rows) {
+        cb(rows);
     });
+    // var db = connectToDatabase();
+    // console.log('db');
+    // db.all('SELECT id, name, description FROM profile WHERE isDeleted = 0', function(err, rows) {
+    //     db.close();
+
+    //     if(err) {
+    //         console.log(err);
+    //     }
+    //     else {
+    //         console.log('repo', rows);
+    //         cb(rows);
+    //     }
+    // });
 };
 
 var getProfile = function(id, cb) {

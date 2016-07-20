@@ -12,17 +12,17 @@ module.exports = {
             },
 
             fahrenheit: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.REAL,
                 allowNull: true
             },
 
             celsius: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.REAL,
                 allowNull: true
             },
 
             kelvin: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.REAL,
                 allowNull: true
             },
 

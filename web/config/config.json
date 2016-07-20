@@ -1,0 +1,16 @@
+{
+  "development": {
+    "username": "thermometer",
+    "password": "thermometer",
+    "database": "thermometer",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "thermometer",
+    "password": "thermometer",
+    "database": "thermometer",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
