@@ -43,11 +43,6 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
         this.profile.probes.find(probe => probe.id === id).isDeleted = true;
     }
 
-    // selectProbe(event: Event) {
-    //     const id:number = +(<HTMLSelectElement>event.srcElement).value;
-    //     this.selectedProbe = this.profile.ProbeProfiles.find(p => p.id === id);
-    // }
-
     selectProbe(id) {
         this.selectedProbe = this.profile.ProbeProfiles.find(p => p.id === +id);
     }

@@ -16,66 +16,12 @@ var getProfiles = function(cb) {
     .then(function(rows) {
         cb(rows);
     });
-    // var db = connectToDatabase();
-    // console.log('db');
-    // db.all('SELECT id, name, description FROM profile WHERE isDeleted = 0', function(err, rows) {
-    //     db.close();
-
-    //     if(err) {
-    //         console.log(err);
-    //     }
-    //     else {
-    //         console.log('repo', rows);
-    //         cb(rows);
-    //     }
-    // });
 };
 
 var getProfile = function(id, cb) {
-    // models.Profile.findAll({ where: { id: id } }).then(function(rows) {
-    //     cb(rows);
-    // });
-
     models.Profile.findAll({ where: { id: id },  include: [{ model: models.ProbeProfile, as: 'ProbeProfiles' }] }).then(function(rows) {
         cb(rows);
     });
-
-    // var db = connectToDatabase();
-
-    // db.all('SELECT p.id, p.name, p.description, p.isDeleted, pp.id, pp.channel, pp.label, pp.upperThreshold, pp.lowerThreshold, pp.isDeleted AS isProbeDeleted FROM profile p LEFT OUTER JOIN probeProfile pp ON p.id = pp.profileId WHERE p.id = $id', { $id: id }, function(err, rows) {
-    //     if(err) {
-    //         db.close();
-    //         console.log(err);
-    //     }
-    //     else {
-    //         if(rows) {
-    //             var profile = new Object();
-    //             profile.id = rows[0].id;
-    //             profile.name = rows[0].name;
-    //             profile.description = rows[0].description;
-    //             profile.isDeleted = rows[0].isDeleted;
-    //             profile.probes = new Array();
-
-    //             rows.forEach(function(item) {
-    //                 if(!item.isDeleted) {
-    //                     var probe = new Object();
-    //                     probe.id = item.id;
-    //                     probe.channel = item.channel;
-    //                     probe.label = item.label;
-    //                     probe.upperThreshold = item.upperThreshold;
-    //                     probe.lowerThreshold = item.lowerThreshold;
-    //                     probe.isDeleted = item.isProbeDeleted;
-
-    //                     profile.probes.push(probe);
-    //                 }
-    //             }, this);
-
-    //             db.close();
-
-    //             cb(profile);
-    //         }
-    //     }
-    // });
 };
 
 // TODO: If sqlite will be used, need to figure out the callbacks for saving. Not worrying about it since I am switching to Postgres.
