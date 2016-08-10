@@ -5,4 +5,5 @@ export class Profile {
     name: string;
     description: string;
     probes: Array<ProbeProfile>;
+    ProbeProfiles: Array<ProbeProfile>;
 }

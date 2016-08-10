@@ -8,8 +8,13 @@ module.exports = function(sequelize, DataTypes) {
     kelvin: DataTypes.INTEGER,
     probeChannel : DataTypes.INTEGER,
     isDeleted: DataTypes.BOOLEAN,
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    readingDateTime: DataTypes.DATE
+  }, {
+    classMethods: {
+      associate: function(models) {
+        TemperatureLog.belongsTo(models.Probe);
+      }
+    }
   });
 
   return TemperatureLog;

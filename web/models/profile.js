@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'profiles',
     classMethods: {
       associate: function(models) {
-        Profile.hasMany(models.ProbeProfile);
+        Profile.hasMany(models.ProbeProfile, { as: 'ProbeProfiles', foreignKey: 'profileId' });
       }
     }
   });

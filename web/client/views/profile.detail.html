@@ -10,14 +10,14 @@
     </div>
     <hr/>
     <div class="form-group">
-    <select class="form-control">
-        <option *ngFor="let probe of profile.probes">{{probe.channel}}-{{probe.label}}</option>
-    </select>
+        <select class="form-control" #currentProbe (change)="selectProbe(currentProbe.value)">
+            <option *ngFor="let probe of profile.ProbeProfiles" [value]="probe.id">{{probe.probeChannel}}-{{probe.label}}</option>
+        </select>
     </div>
     <div>
         <div class="form-group">
             <label for="channel">Channel</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedProbe.channel" name="channel" #name="ngModel" />
+            <input type="text" class="form-control" [(ngModel)]="selectedProbe.probeChannel" name="channel" #name="ngModel" />
         </div>
         <div class="form-group">
             <label for="label">Label</label>

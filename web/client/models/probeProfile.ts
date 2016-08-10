@@ -1,6 +1,6 @@
 export class ProbeProfile {
     id: number;
-    channel: number;
+    probeChannel: number;
     label: string;
     upperThreshold: number;
     lowerThreshold: number;

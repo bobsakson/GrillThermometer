@@ -7,8 +7,18 @@ module.exports = function(sequelize, DataTypes) {
     upperThreshold: DataTypes.INTEGER,
     lowerThreshold: DataTypes.INTEGER,
     probeChannel: DataTypes.INTEGER,
-    profileId : DataTypes.INTEGER,
-    readingDateTime: DataTypes.DATE
+    profileId: DataTypes.INTEGER,
+    isDeleted: DataTypes.BOOLEAN,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE       
+  }, {
+    tableName: 'probeProfiles',
+    classMethods: {
+      associate: function(models) {
+        ProbeProfile.belongsTo(models.Profile, { foreignKey: 'profileId' });
+        // ProbeProfile.belongsTo(models.Probe, { foreignKey: 'channel' });
+      }
+    }
   });
 
   return ProbeProfile;

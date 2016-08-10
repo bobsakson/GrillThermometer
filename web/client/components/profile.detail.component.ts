@@ -43,6 +43,15 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
         this.profile.probes.find(probe => probe.id === id).isDeleted = true;
     }
 
+    // selectProbe(event: Event) {
+    //     const id:number = +(<HTMLSelectElement>event.srcElement).value;
+    //     this.selectedProbe = this.profile.ProbeProfiles.find(p => p.id === id);
+    // }
+
+    selectProbe(id) {
+        this.selectedProbe = this.profile.ProbeProfiles.find(p => p.id === +id);
+    }
+
     onSubmit() {
         this.profileService.saveProfile(this.profile).then(response => console.log(response));
     }
@@ -60,8 +69,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
             if(id !== 0) {
                 this.profileService.getProfile(id).then(profile => {
                     this.profile = profile;
-                    this.probes = profile.probes.filter(p => p.isDeleted === false);
-                    this.selectedProbe = profile.probes.find(p => p.isDeleted == false);
+                    this.selectedProbe = profile.ProbeProfiles.find(p => p.isDeleted === false);
                 });
             }
         });

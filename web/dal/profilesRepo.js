@@ -12,7 +12,8 @@ var connectToDatabase = function() {
 }
 
 var getProfiles = function(cb) {
-    models.Profile.findAll({ where: { isDeleted: false } }).then(function(rows) {
+    models.Profile.findAll({ where: { isDeleted: false } })
+    .then(function(rows) {
         cb(rows);
     });
     // var db = connectToDatabase();
@@ -31,42 +32,50 @@ var getProfiles = function(cb) {
 };
 
 var getProfile = function(id, cb) {
-    var db = connectToDatabase();
+    // models.Profile.findAll({ where: { id: id } }).then(function(rows) {
+    //     cb(rows);
+    // });
 
-    db.all('SELECT p.id, p.name, p.description, p.isDeleted, pp.id, pp.channel, pp.label, pp.upperThreshold, pp.lowerThreshold, pp.isDeleted AS isProbeDeleted FROM profile p LEFT OUTER JOIN probeProfile pp ON p.id = pp.profileId WHERE p.id = $id', { $id: id }, function(err, rows) {
-        if(err) {
-            db.close();
-            console.log(err);
-        }
-        else {
-            if(rows) {
-                var profile = new Object();
-                profile.id = rows[0].id;
-                profile.name = rows[0].name;
-                profile.description = rows[0].description;
-                profile.isDeleted = rows[0].isDeleted;
-                profile.probes = new Array();
-
-                rows.forEach(function(item) {
-                    if(!item.isDeleted) {
-                        var probe = new Object();
-                        probe.id = item.id;
-                        probe.channel = item.channel;
-                        probe.label = item.label;
-                        probe.upperThreshold = item.upperThreshold;
-                        probe.lowerThreshold = item.lowerThreshold;
-                        probe.isDeleted = item.isProbeDeleted;
-
-                        profile.probes.push(probe);
-                    }
-                }, this);
-
-                db.close();
-
-                cb(profile);
-            }
-        }
+    models.Profile.findAll({ where: { id: id },  include: [{ model: models.ProbeProfile, as: 'ProbeProfiles' }] }).then(function(rows) {
+        cb(rows);
     });
+
+    // var db = connectToDatabase();
+
+    // db.all('SELECT p.id, p.name, p.description, p.isDeleted, pp.id, pp.channel, pp.label, pp.upperThreshold, pp.lowerThreshold, pp.isDeleted AS isProbeDeleted FROM profile p LEFT OUTER JOIN probeProfile pp ON p.id = pp.profileId WHERE p.id = $id', { $id: id }, function(err, rows) {
+    //     if(err) {
+    //         db.close();
+    //         console.log(err);
+    //     }
+    //     else {
+    //         if(rows) {
+    //             var profile = new Object();
+    //             profile.id = rows[0].id;
+    //             profile.name = rows[0].name;
+    //             profile.description = rows[0].description;
+    //             profile.isDeleted = rows[0].isDeleted;
+    //             profile.probes = new Array();
+
+    //             rows.forEach(function(item) {
+    //                 if(!item.isDeleted) {
+    //                     var probe = new Object();
+    //                     probe.id = item.id;
+    //                     probe.channel = item.channel;
+    //                     probe.label = item.label;
+    //                     probe.upperThreshold = item.upperThreshold;
+    //                     probe.lowerThreshold = item.lowerThreshold;
+    //                     probe.isDeleted = item.isProbeDeleted;
+
+    //                     profile.probes.push(probe);
+    //                 }
+    //             }, this);
+
+    //             db.close();
+
+    //             cb(profile);
+    //         }
+    //     }
+    // });
 };
 
 // TODO: If sqlite will be used, need to figure out the callbacks for saving. Not worrying about it since I am switching to Postgres.

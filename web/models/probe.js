@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Probe.hasMany(models.ProbeProfile);
+        // Probe.hasMany(models.ProbeProfile, { as: 'ProbeProfiles'});
         Probe.hasMany(models.TemperatureLog);
       }
     }

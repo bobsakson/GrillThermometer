@@ -19,7 +19,6 @@ export class ProfileService {
     }
 
     getProfiles2(): Promise<string> {
-        console.log('Hit the profile HTTP');
         return this.http.get('http://localhost:4000/profile1')
                .toPromise()
                .then((response) => 
@@ -35,7 +34,7 @@ export class ProfileService {
         return this.http.get('http://localhost:4000/profile1/', { search: params })
                .toPromise()
                .then((response) => 
-                response.json()
+                response.json()[0]
                 )
                .catch((err) => console.log(err));
     }
