@@ -16,8 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         ProbeProfile.belongsTo(models.Profile, { foreignKey: 'profileId' });
-        // TODO: Add the relationship and subsequent code to get the channel relationship working.
-        // ProbeProfile.belongsTo(models.Probe, { foreignKey: 'channel' });
+        ProbeProfile.belongsTo(models.Probe, { foreignKey: 'probeChannel' });
       }
     }
   });
