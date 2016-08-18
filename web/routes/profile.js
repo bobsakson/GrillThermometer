@@ -24,8 +24,8 @@ router.get('/', function(req, res) {
 
 router.post('/', function(req, res) {
     console.log('post');
-    profilesRepo.saveProfile(req.body.profile, function() {
-        res.send(true);
+    profilesRepo.saveProfile(req.body.profile, function(result) {
+        res.send(result);
     });
 });
 

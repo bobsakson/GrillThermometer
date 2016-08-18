@@ -29,7 +29,8 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     }
     
     saveProbe() {
-        this.profile.probes.push(this.newProbe);
+        //this.profile.probes.push(this.newProbe);
+        this.profile.ProbeProfiles.push(this.newProbe);
         this.newProbe = new ProbeProfile();
         this.showAddProbe = false;
     }
@@ -40,7 +41,8 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     }
 
     deleteProbe(id) {
-        this.profile.probes.find(probe => probe.id === id).isDeleted = true;
+        // this.profile.probes.find(probe => probe.id === id).isDeleted = true;
+        this.profile.ProbeProfiles.find(probe => probe.id === id).isDeleted = true;
     }
 
     selectProbe(id) {
@@ -54,6 +56,7 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.profile = new Profile();
         this.profile.probes = new Array<ProbeProfile>();
+        this.profile.ProbeProfiles = new Array<ProbeProfile>();
         this.newProbe = new ProbeProfile();
         this.selectedProbe = new ProbeProfile();
         this.probes = new Array<ProbeProfile>();

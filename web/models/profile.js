@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Profile = sequelize.define('Profile', {
-    id: { type: DataTypes.INTEGER, primaryKey: true},
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     isDeleted: DataTypes.BOOLEAN,

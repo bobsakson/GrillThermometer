@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var ProbeProfile = sequelize.define('ProbeProfile', {
-    id: { type: DataTypes.INTEGER, primaryKey: true},
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     label: DataTypes.STRING,
     upperThreshold: DataTypes.INTEGER,
     lowerThreshold: DataTypes.INTEGER,

@@ -1,6 +1,7 @@
 var sqlite3 = require('sqlite3');
 var fs = require('fs');
 var path = require('path');
+var Promise = require('bluebird');
 var models = require('../models');
 
 sqlite3.verbose();
@@ -25,21 +26,49 @@ var getProfile = function(id, cb) {
 };
 
 // TODO: If sqlite will be used, need to figure out the callbacks for saving. Not worrying about it since I am switching to Postgres.
-var saveProfile = function(profile) {
-    var db = connectToDatabase();
-
-    db.run('INSERT INTO profile(name, description, isDeleted) VALUES($name, $description, $isDeleted)', { $name: profile.name, $description: profile.description, $isDeleted: 0 }, function(err, row) {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            var lastId = this.lastID;
-
-            profile.probes.forEach(function(probe) {
-                db.run('INSERT INTO probeProfile(channel, profileId, label, upperThreshold, lowerThreshold, isDeleted) VALUES($channel, $profileId, $label, $upperThreshold, $lowerThreshold, $isDeleted)', { $channel: probe.channel, $profileId: lastId, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: 0});
-            }, this);
-        }
+var saveProfile = function(profile, cb) {
+    models.Profile.create({
+        name: profile.name,
+        description: profile.description,
+        isDeleted: 0
+    }).then(function(dbProfile) {
+        Promise.map(profile.ProbeProfiles, function(probe) {
+            models.ProbeProfile.create({
+                label: probe.label,
+                upperThreshold: probe.upperThreshold,
+                lowerThreshold: probe.lowerThreshold,
+                probeChannel: probe.probeChannel,
+                profileId: dbProfile.id,
+                isDeleted: 0
+            }).catch(function(err){
+                console.log(err);
+                console.log('Error saving the probe profile.')
+                cb(false);
+            }).finally(function() {
+                cb(true);
+            });
+        });
+    }).catch(function(err){
+        console.log(err);
+        console.log('Error saving the profile.')
+        cb(false);
     });
+    
+    
+    // var db = connectToDatabase();
+
+    // db.run('INSERT INTO profile(name, description, isDeleted) VALUES($name, $description, $isDeleted)', { $name: profile.name, $description: profile.description, $isDeleted: 0 }, function(err, row) {
+    //     if(err) {
+    //         console.log(err);
+    //     }
+    //     else {
+    //         var lastId = this.lastID;
+
+    //         profile.probes.forEach(function(probe) {
+    //             db.run('INSERT INTO probeProfile(channel, profileId, label, upperThreshold, lowerThreshold, isDeleted) VALUES($channel, $profileId, $label, $upperThreshold, $lowerThreshold, $isDeleted)', { $channel: probe.channel, $profileId: lastId, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: 0});
+    //         }, this);
+    //     }
+    // });
 };
 
 var updateProfile = function(profile) {
