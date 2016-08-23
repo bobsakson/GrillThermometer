@@ -14,7 +14,7 @@
             <option *ngFor="let probe of profile.ProbeProfiles" [value]="probe.id">{{probe.probeChannel}}-{{probe.label}}</option>
         </select>
     </div>
-    <div>
+    <div *ngIf="!showAddProbe">
         <div class="form-group">
             <label for="channel">Channel</label>
             <input type="text" class="form-control" [(ngModel)]="selectedProbe.probeChannel" name="channel" #name="ngModel" />
@@ -32,10 +32,10 @@
             <input type="text" class="form-control" [(ngModel)]="selectedProbe.lowerThreshold" name="lowerThreshold" #name="ngModel" />
         </div>
         <button (click)="deleteProbe(selectedProbe.id)" class="btn btn-default">Delete</button>
+        
     </div>
     <div>
         <button (click)="addProbe()" *ngIf="!showAddProbe" class="btn btn-default">Add</button>
-        <button (click)="cancelAddProbe()" *ngIf="showAddProbe" class="btn btn-default">Cancel</button>
     </div>
     <div *ngIf="showAddProbe">
         <div class="form-group">
@@ -57,5 +57,7 @@
         <button (click)="saveProbe()" class="btn btn-default">Add Probe</button>
     </div>
     
-    <button (click)="onSubmit()" class="btn btn-primary">Save</button>
+    <button (click)="onSubmit()" class="btn btn-primary" *ngIf="!showAddProbe">Save</button>
+    <button (click)="cancelAddProbe()" *ngIf="showAddProbe" class="btn btn-default">Cancel</button>
+    <button *ngIf="!showAddProbe" class="btn btn-default" [routerLink]="['/profile']">Cancel</button>
 </form>
