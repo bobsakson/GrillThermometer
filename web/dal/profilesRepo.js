@@ -55,26 +55,49 @@ var saveProfile = function(profile, cb) {
     });
 };
 
-var updateProfile = function(profile) {
-    var db = connectToDatabase();
-    console.log(profile);
-    db.run('UPDATE profile SET name = $name, description = $description, isDeleted = $isDeleted WHERE id = $id', { $id: profile.id, $name: profile.name, $description: profile.description, $isDeleted: profile.isDeleted }, function(err, row) {
-        if(err) {
-            console.log(err);
-        }
-        else {
-            profile.probes.forEach(function(probe) {
-                if(probe.id) {
-                    db.run('UPDATE probeProfile SET channel = $channel, label = $label, upperThreshold = $upperThreshold, lowerThreshold = $lowerThreshold, isDeleted = $isDeleted WHERE id = $id', { $channel: probe.channel, $id: probe.id, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: probe.isDeleted });
-                }
-                else {
-                    db.run('INSERT INTO probeProfile(channel, profileId, label, upperThreshold, lowerThreshold, isDeleted) VALUES($channel, $profileId, $label, $upperThreshold, $lowerThreshold, $isDeleted)', { $channel: probe.channel, $profileId: profile.id, $label: probe.label, $upperThreshold: probe.upperThreshold, $lowerThreshold: probe.lowerThreshold, $isDeleted: 0});
-                }
-            }, this);
-        }
+var updateProfile = function(profile, cb) {
+    models.Profile.update({
+        name: profile.name,
+        description: profile.description,
+        isDeleted: profile.isDeleted
+    }, { where: { id: profile.id }}).then(function(dbProfile) {
+        Promise.map(profile.ProbeProfiles, function(probe) {
+            if(probe.id) {
+                models.ProbeProfile.create({
+                    label: probe.label,
+                    upperThreshold: probe.upperThreshold,
+                    lowerThreshold: probe.lowerThreshold,
+                    probeChannel: probe.probeChannel,
+                    profileId: dbProfile.id,
+                    isDeleted: 0
+                }).catch(function(err){
+                    console.log(err);
+                    console.log('Error saving the probe profile.')
+                    cb(false);
+                });
+            }
+            else {
+                models.ProbeProfile.update({
+                    label: probe.label,
+                    upperThreshold: probe.upperThreshold,
+                    lowerThreshold: probe.lowerThreshold,
+                    probeChannel: probe.probeChannel,
+                    profileId: dbProfile.id,
+                    isDeleted: probe.isDeleted
+                }, { where: { id: probe.id }}).catch(function(err){
+                    console.log(err);
+                    console.log('Error saving the probe profile.')
+                    cb(false);
+                });
+            }
+        });
+    }).then(function() {
+        cb(true);
+    }).catch(function(err){
+        console.log(err);
+        console.log('Error saving the profile.')
+        cb(false);
     });
-
-    db.close();
 };
 
 module.exports.getProfiles = getProfiles;
