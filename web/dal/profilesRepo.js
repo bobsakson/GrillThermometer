@@ -44,10 +44,10 @@ var saveProfile = function(profile, cb) {
                 console.log(err);
                 console.log('Error saving the probe profile.')
                 cb(false);
-            }).finally(function() {
-                cb(true);
             });
         });
+    }).then(function() {
+        cb(true);
     }).catch(function(err){
         console.log(err);
         console.log('Error saving the profile.')
