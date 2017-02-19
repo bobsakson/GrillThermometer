@@ -6,7 +6,7 @@ var reload = browserSync.reload;
 
 gulp.task('scripts', function() {
     return gulp.src('./*.js', './routes/*.js')
-        .pipe(concat('main.js'))
+        .pipe(concat('app.module.js'))
         .pipe(gulp.dest('public'));
 });
 

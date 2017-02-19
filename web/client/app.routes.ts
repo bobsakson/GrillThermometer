@@ -1,9 +1,9 @@
-import { provideRouter, RouterConfig }  from '@angular/router';
+import { Routes }  from '@angular/router';
 import { ProbeComponent } from './components/probe.component';
 import { ProfileComponent } from './components/profile.component';
 import { ProfileDetailComponent } from './components/profile.detail.component';
 
-const routes: RouterConfig = [
+export const APPLICATION_ROUTES: Routes = [
   {
   path: '',
   redirectTo: '/probe',
@@ -21,8 +21,4 @@ const routes: RouterConfig = [
     path: 'profile/:id',
     component: ProfileDetailComponent
   }
-];
-
-export const APP_ROUTER_PROVIDERS = [
-  provideRouter(routes)
 ];

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../models/profile';
 import 'rxjs/add/operator/toPromise';
@@ -7,8 +7,7 @@ import 'rxjs/add/operator/toPromise';
 @Component({
     selector: 'app',
     templateUrl: './client/views/profile.html',
-    providers: [ProfileService],
-    directives: [ROUTER_DIRECTIVES, RouterLink]
+    providers: [ProfileService]
 })
 
 export class ProfileComponent implements OnInit {

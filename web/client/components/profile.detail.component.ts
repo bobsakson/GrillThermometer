@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/common';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 import { Subscription } from 'rxjs/Subscription';
 import { ProfileService } from '../services/profile.service';
@@ -10,8 +10,7 @@ import { ProbeProfile } from '../models/probeProfile';
 @Component({
     selector: 'app',
     templateUrl: './client/views/profile.detail.html',
-    providers: [ProfileService],
-    directives: [ROUTER_DIRECTIVES]
+    providers: [ProfileService]
 })
 
 export class ProfileDetailComponent implements OnInit, OnDestroy {

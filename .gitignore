@@ -1,7 +1,7 @@
 node_modules/
 public/
-web/client/main.js
-web/client/main.js.map
+web/client/app.module.js
+web/client/app.module.js.map
 web/client/components/*.js
 web/client/components/*.js.map
 web/client/services/*.js

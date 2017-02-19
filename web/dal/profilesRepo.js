@@ -1,16 +1,7 @@
-var sqlite3 = require('sqlite3');
 var fs = require('fs');
 var path = require('path');
 var Promise = require('bluebird');
 var models = require('../models');
-
-sqlite3.verbose();
-
-var connectToDatabase = function() {
-    console.log(__dirname + '/../thermometer.db');
-    
-    return new sqlite3.Database(__dirname + '/../thermometer.db');
-}
 
 var getProfiles = function(cb) {
     models.Profile.findAll({ where: { isDeleted: false } })
